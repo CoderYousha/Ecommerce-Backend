@@ -40,6 +40,21 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'user' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+
+        'verification' => [
+            'driver' => 'sanctum',
+            'provider' => 'verifications',
+        ],
+
+        'reset-password' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
     ],
 
     /*
@@ -64,6 +79,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+
+        'verifications' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Verification::class,
+        ],
+        
 
         // 'users' => [
         //     'driver' => 'database',

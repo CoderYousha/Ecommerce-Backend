@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
             $table->string('full_name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone')->nullable();
             $table->string('whatsapp_phone')->nullable();
             $table->string('password')->nullable();
             $table->enum('role', ['admin', 'employee', 'user'])->nullable();
+            $table->string('code');
+            $table->timestamp('expiry_date');
             
             $table->timestamps();
         });
