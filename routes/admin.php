@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('check-auth')->group(function () {
+    Route::middleware('admin-auth')->group(function () {
+        Route::controller(UsersController::class)->prefix('users')->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{user}', 'update');
+            Route::delete('/{user}', 'delete');
+            Route::get('/', 'read');
+            Route::get('/{user}', 'show');
+        });
+        Route::controller(CategoriesController::class)->prefix('categories')->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{category}', 'update');
+            Route::delete('/{category}', 'delete');
+        });
+    });
 });
-
