@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('check-auth')->group(function (){
+    Route::middleware('employee-auth')->group(function (){
+        Route::controller(ProductsController::class)->prefix('products')->group(function (){
+            Route::post('/', 'store');
+            Route::post('/{product}', 'update');
+            Route::delete('/images/{productImage}', 'deleteImage');
+            Route::delete('/{product}', 'delete');
+        });
+    });
 });
-

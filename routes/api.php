@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\BannersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,8 +36,16 @@ Route::controller(AuthenticationController::class)->group(function () {
 });
 
 Route::middleware('check-auth')->group(function () {
-    Route::controller(CategoriesController::class)->prefix('categories')->group(function (){
+    Route::controller(CategoriesController::class)->prefix('categories')->group(function () {
         Route::get('/', 'read');
         Route::get('/{category}', 'show');
+    });
+    Route::controller(ProductsController::class)->prefix('products')->group(function () {
+        Route::get('/', 'read');
+        Route::get('/{product}', 'show');
+    });
+    Route::controller(BannersController::class)->prefix('banners')->group(function () {
+        Route::get('/', 'read');
+        Route::get('/{banner}', 'show');
     });
 });

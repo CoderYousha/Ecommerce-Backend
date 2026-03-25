@@ -16,7 +16,7 @@ class CheckEmployeeAuthentication
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('user')->user()->role === 'employee') {
+        if (Auth::guard('user')->user()->role === 'employee' || Auth::guard('user')->user()->role === 'admin') {
             return $next($request);
         }
         return error('some thing went wrong', 'Forbidden', 403);

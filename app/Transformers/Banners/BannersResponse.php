@@ -19,8 +19,8 @@ class BannersResponse {
                 'end_date' => $banner->end_date,
                 'status' => $banner->status,
                 'images' => $banner->images,
-                ProductResponse::format($banner->product),
-                CategoryResponse::format($banner->category),
+                'product' => ProductResponse::format($banner->product)['product'],
+                'category' => CategoryResponse::format($banner->category)['category'],
             ];
         }
 

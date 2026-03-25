@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\BannersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,12 @@ Route::middleware('check-auth')->group(function () {
             Route::post('/', 'store');
             Route::post('/{category}', 'update');
             Route::delete('/{category}', 'delete');
+        });
+        Route::controller(BannersController::class)->prefix('banners')->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{banner}', 'update');
+            Route::delete('/{banner}', 'delete');
+            Route::delete('/image/{bannerImage}', 'deleteImage');
         });
     });
 });

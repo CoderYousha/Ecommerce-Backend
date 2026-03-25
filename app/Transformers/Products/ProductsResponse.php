@@ -21,7 +21,7 @@ class ProductsResponse
                 'price' => $product->price,
                 'amount' => $product->amount,
                 'images' => $product->images,
-                CategoryResponse::format($product->category),
+                'category' => CategoryResponse::format($product->category)['category'],
             ];
         }
 
