@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Transformers\Carts;
-
-use App\Transformers\Pagination\PaginationResponse;
 use App\Transformers\Products\ProductResponse;
 
 class CartsResponse {
@@ -13,11 +11,9 @@ class CartsResponse {
             $data['carts'][] = [
                 'id' => $cart->id,
                 'amount' => $cart->amount,
-                ProductResponse::format($cart->product),
+                'product' => ProductResponse::format($cart->product)['product'],
             ];
         }
-
-        $data['pagination'] = PaginationResponse::format($carts);
 
         return $data;
     }

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartsController;
+use App\Http\Controllers\FavoritesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('check-auth')->group(function () {
+    Route::middleware('client-auth')->group(function () {
+        Route::controller(FavoritesController::class)->prefix('favorites')->group(function (){
+            Route::post('/{product}', 'favorite');
+            Route::get('/', 'read');
+        });
+        Route::controller(CartsController::class)->prefix('carts')->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{cart}', 'update');
+            Route::get('/', 'read');
+            Route::delete('/{cart}', 'delete');
+        });
+    });
 });
-

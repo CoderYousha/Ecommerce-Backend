@@ -22,4 +22,12 @@ class User extends Authenticatable
         'role',
         'status',
     ];
+
+    public function favoriteProducts (){
+        return $this->belongsToMany(Product::class, 'favorite_products', 'user_id', 'product_id');
+    }
+
+    public function carts() {
+        return $this->hasMany(Cart::class, 'user_id', 'id');
+    }
 }
