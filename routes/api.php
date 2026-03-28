@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\BannersController;
+use App\Http\Controllers\OrdersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,5 +48,9 @@ Route::middleware('check-auth')->group(function () {
     Route::controller(BannersController::class)->prefix('banners')->group(function () {
         Route::get('/', 'read');
         Route::get('/{banner}', 'show');
+    });
+    Route::controller(OrdersController::class)->prefix('orders')->group(function (){
+        Route::get('/', 'read');
+        Route::get('/{order}', 'show');
     });
 });

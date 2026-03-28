@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('location_id');
-            $table->boolean('status');
+            $table->enum('status', ['pending','in_preparation','to_deliver','accepted','delivered','canceled'])->default('pending');
             $table->enum('payment_method', ['manual', 'sham_cash']);
-            $table->enum('payment_status', ['pending', 'paid', 'failed']);
+            $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onDelete('cascade');

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\OrdersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,10 @@ Route::middleware('check-auth')->group(function () {
             Route::get('/', 'read');
             Route::get('/{location}', 'show');
             Route::delete('/{location}', 'delete');
+        });
+        Route::controller(OrdersController::class)->prefix('orders')->group(function (){
+            Route::post('/', 'store');
+            Route::post('/{order}/cancel', 'cancel');
         });
     });
 });
