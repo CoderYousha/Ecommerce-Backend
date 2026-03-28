@@ -27,6 +27,16 @@ class CartsController extends Controller
         return $this->cartService->updateCart($cart, $updateCartRequest->amount);
     }
 
+    //Increase Amount Function
+    public function increase (Cart $cart){
+        return $this->cartService->increaseAmount($cart);
+    }
+
+    //Decrease Amount Function
+    public function decrease (Cart $cart){
+        return $this->cartService->decreaseAmount($cart);
+    }
+
     //Delete Cart Function
     public function delete(Cart $cart){
         return $this->cartService->deleteCart($cart);

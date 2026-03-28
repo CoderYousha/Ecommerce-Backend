@@ -26,6 +26,8 @@ Route::middleware('check-auth')->group(function () {
         Route::controller(CartsController::class)->prefix('carts')->group(function () {
             Route::post('/', 'store');
             Route::post('/{cart}', 'update');
+            Route::post('/{cart}/increase', 'increase');
+            Route::post('/{cart}/decrease', 'decrease');
             Route::get('/', 'read');
             Route::delete('/{cart}', 'delete');
         });

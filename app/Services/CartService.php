@@ -16,6 +16,10 @@ class CartService
         $product = Product::find($data['product_id']);
         $data['user_id'] = $user->id;
 
+        if ($data['amount'] <= 0) {
+            return error('some thing went wrong', 'Invalid amount');
+        }
+
         if ($data['amount'] > $product->amount) {
             return error('some thing went wrong', 'No enought products');
         }
@@ -38,13 +42,40 @@ class CartService
         return success(CartResponse::format($cart), 'Cart updated successfully');
     }
 
-    public function deleteCart (Cart $cart) {
+    public function increaseAmount(Cart $cart)
+    {
+        if ($cart->product->amount < $cart->amount + 1) {
+            return error('some thing went wrong', 'No enought products');
+        }
+
+        $cart->update([
+            'amount' => $cart->amount + 1
+        ]);
+
+        return success(CartResponse::format($cart), 'Cart updated successfully');
+    }
+
+    public function decreaseAmount(Cart $cart)
+    {
+        if ($cart->amount - 1 <= 0) {
+            return error('some thing went wrong', 'Invalid amount');
+        }
+        $cart->update([
+            'amount' => $cart->amount - 1
+        ]);
+
+        return success(CartResponse::format($cart), 'Cart updated successfully');
+    }
+
+    public function deleteCart(Cart $cart)
+    {
         $cart->delete();
 
         return success(null, 'Product removed from your cart');
     }
 
-    public function getCarts () {
+    public function getCarts()
+    {
         $user = Auth::guard('user')->user();
         $carts = $user->carts;
 
