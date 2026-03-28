@@ -9,6 +9,7 @@ class Location extends Model
 {
     use HasFactory;
 
+    protected $with = ['user'];
     protected $table ='locations';
     protected $fillable = [
         'user_id',
@@ -17,4 +18,8 @@ class Location extends Model
         'building',
         'floor',
     ];
+
+    public function user (){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

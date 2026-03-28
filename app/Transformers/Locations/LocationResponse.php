@@ -13,7 +13,7 @@ class LocationResponse {
                 'street' => $location->street,
                 'building' => $location->building,
                 'floor' => $location->floor,
-                UserResponse::format($location->user),
+                'user' => UserResponse::format($location->user)['user'],
             ]
         ];
 

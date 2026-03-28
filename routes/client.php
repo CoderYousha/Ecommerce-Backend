@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\LocationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,13 @@ Route::middleware('check-auth')->group(function () {
             Route::post('/{cart}', 'update');
             Route::get('/', 'read');
             Route::delete('/{cart}', 'delete');
+        });
+        Route::controller(LocationsController::class)->prefix('locations')->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{location}', 'update');
+            Route::get('/', 'read');
+            Route::get('/{location}', 'show');
+            Route::delete('/{location}', 'delete');
         });
     });
 });

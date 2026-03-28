@@ -2,8 +2,6 @@
 
 namespace App\Transformers\Locations;
 
-use App\Transformers\Pagination\PaginationResponse;
-
 class LocationsResponse {
     public static function format ($locations) {
         $data = ['locations' => []];
@@ -17,8 +15,6 @@ class LocationsResponse {
                 'floor' => $location->floor,
             ];
         }
-
-        $data['pagination'] = PaginationResponse::format($locations);
 
         return $data;
     }
