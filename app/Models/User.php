@@ -21,6 +21,7 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'fcm_token'
     ];
 
     public function favoriteProducts (){

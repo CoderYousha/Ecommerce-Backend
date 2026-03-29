@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ClientNotification;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Transformers\Orders\OrderResponse;
@@ -57,6 +58,32 @@ class OrderService
         ]);
 
         return success(OrderResponse::format($order), 'Order canceled successfully');
+    }
+
+    public function changeOrderStatus(Order $order, $status, $paymentStatus)
+    {
+        $host = request()->getHost();
+        $port = request()->getPort();
+        $url = $host + ':' + $port + '/';
+        $stateEn = $status == 'accepted' ? 'Accepted' : ($status == 'in_preparation' ? 'In Preparation' : ($status == 'to_deliver' ? 'To Deliver' : ($status == 'delivered' ? 'Delivered' : 'Canceled')));
+        $stateAr = $status == 'accepted' ? 'تمت الموافقة' : ($status == 'in_preparation' ? 'قيد التجهيز' : ($status == 'to_deliver' ? 'قيد التوصيل' : ($status == 'delivered' ? 'تم التوصيل' : 'تم الإلغاء')));
+
+        $order->update([
+            'status' => $status,
+            'payment_status' => $paymentStatus,
+        ]);
+
+        ClientNotification::create([
+            'user_id' => $order->user_id,
+            'name_en' => 'Order Status',
+            'name_ar' => 'حالة الطلب',
+            'description_en' => `Order ID {$order->id} status become $stateEn`,
+            'description_ar' => `الطلب صاحب الرقم {order->id} أصبحت حالته $stateAr`,
+            'type' => 'Order',
+            'link' => $url . '/api/orders/' . $order->id,
+        ]);
+
+        return success(OrderResponse::format($order), 'Order Status changed successfully');
     }
 
     public function getOrders($perPage, $user_id)

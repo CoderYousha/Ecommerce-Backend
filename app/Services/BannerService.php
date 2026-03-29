@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Banner;
 use App\Models\BannerImage;
+use App\Models\ClientNotification;
+use App\Models\User;
 use App\Transformers\Banners\BannerResponse;
 use App\Transformers\Banners\BannersResponse;
 use Illuminate\Support\Facades\File;
@@ -12,6 +14,11 @@ class BannerService
 {
     public function createBanner($data, $request)
     {
+        $users = User::where('role', 'user')->get();
+        $host = request()->getHost();
+        $port = request()->getPort();
+        $url = $host + ':' + $port;
+
         $banner = Banner::create($data);
         if ($request->images) {
             foreach ($request->images as $image) {
@@ -21,6 +28,18 @@ class BannerService
                     'image' => $path,
                 ]);
             }
+        }
+
+        foreach($users as $user){
+            ClientNotification::create([
+                'user_id' => $user->id,
+                'name_en' => 'New Banner',
+                'name_ar' => 'إعلان جديد',
+                'description_en' => $data['name_en'],
+                'description_ar' => $data['name_ar'],
+                'type' => 'Banner',
+                'link' => $url + '/api/banners/' . $banner->id,
+            ]);
         }
 
         return success(BannerResponse::format($banner), 'Banner created successfully', 201);

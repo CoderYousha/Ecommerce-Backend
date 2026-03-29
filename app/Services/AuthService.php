@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Verification;
 use App\Transformers\Authentications\LoginResponse;
 use App\Transformers\Authentications\ProfileResponse;
+use App\Transformers\Users\UserResponse;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -138,7 +139,7 @@ class AuthService
         $verification = Auth::guard('verification')->user();
 
         if ($verification && $code == $verification->code && Carbon::now() < $verification->expiry_date) {
-            $user = User::where('email',$verification->email)->first();
+            $user = User::where('email', $verification->email)->first();
             $token = $user->createToken('reset-password')->plainTextToken;
             $verification->delete();
 
@@ -148,10 +149,11 @@ class AuthService
         return error('something went wrong', 'Incorrect verification code');
     }
 
-    public function resetForgetPassword($request){
+    public function resetForgetPassword($request)
+    {
         $user = Auth::guard('reset-password')->user();
 
-        if($user){
+        if ($user) {
             $user->update([
                 'password' => Hash::make($request->password),
             ]);
@@ -160,5 +162,14 @@ class AuthService
             return success(null, 'Your password updated successfully');
         }
         return error('some thing went wrong', 'Forbidden', 403);
+    }
+
+    public function saveToken($token)
+    {
+        $user = Auth::guard('user')->user();
+
+        $user->update(['fcm_token' => $token]);
+
+        return success(UserResponse::format($user), 'Token saved successfully');
     }
 }

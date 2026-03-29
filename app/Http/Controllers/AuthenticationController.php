@@ -79,4 +79,9 @@ class AuthenticationController extends Controller
     {
         return $this->authService->resetForgetPassword($resetForgetPasswordRequest);
     }
+
+    //Store FCM Token Function
+    public function storeToken (Request $request){
+        return $this->authService->saveToken($request->token);
+    }
 }

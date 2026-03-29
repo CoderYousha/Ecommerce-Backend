@@ -16,7 +16,7 @@ class OrderItemsResponse
                 'id' => $item->id,
                 'amount' => $item->amount,
                 'total_price' => $item->total_price,
-                'product' => ProductResponse::format($item->product),
+                'product' => ProductResponse::format($item->product)['product'],
             ];
         }
 

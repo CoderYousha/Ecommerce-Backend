@@ -26,6 +26,11 @@ class OrdersController extends Controller
         return $this->orderService->cancelOrder($order);
     }
 
+    //Change Order Status Function
+    public function updateStatus (Order $order, Request $request){
+        return $this->orderService->changeOrderStatus($order, $request->status, $request->payment_status);
+    }
+
     //Get Orders Function
     public function read (Request $request){
         return $this->orderService->getOrders($request->per_page, $request->user_id);
