@@ -5,12 +5,18 @@ namespace App\Services;
 use App\Models\User;
 use App\Transformers\Users\UserResponse;
 use App\Transformers\Users\UsersResponse;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     public function createUser($request)
     {
+        $pathh = null;
+        if ($request->image) {
+            $path = uploadImage($request->image, 'UsersImages');
+            $data['image'] = $path;
+        }
         $user = User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
@@ -20,6 +26,7 @@ class UserService
             'role' => $request->role,
             'full_name' => $request->full_name,
             'status' => $request->status,
+            'image' => $path,
         ]);
 
         return success(UserResponse::format($user), 'User created successfully', 201);
@@ -27,6 +34,13 @@ class UserService
 
     public function updateUser(User $user, $request)
     {
+        if ($request->image) {
+            if(File::exists($user->image)){
+                File::delete($request->image);
+            }
+            $path = uploadImage($request->image, 'UsersImages');
+            $data['image'] = $path;
+        }
         $user->update([
             'full_name' => $request->full_name,
             'email' => $request->email,
@@ -36,6 +50,7 @@ class UserService
             'role' => $request->role,
             'full_name' => $request->full_name,
             'status' => $request->status,
+            'image' => $path ?? $user->image,
         ]);
 
         return success(UserResponse::format($user), 'User updated successfully');
@@ -55,7 +70,8 @@ class UserService
         return success(UsersResponse::format($users), 'Users Information');
     }
 
-    public function getUser(User $user) {
+    public function getUser(User $user)
+    {
         return success(UserResponse::format($user), 'User information');
     }
 }

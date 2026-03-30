@@ -64,7 +64,7 @@ class OrderService
     {
         $host = request()->getHost();
         $port = request()->getPort();
-        $url = $host + ':' + $port + '/';
+        $url = $host . ':' . $port;
         $stateEn = $status == 'accepted' ? 'Accepted' : ($status == 'in_preparation' ? 'In Preparation' : ($status == 'to_deliver' ? 'To Deliver' : ($status == 'delivered' ? 'Delivered' : 'Canceled')));
         $stateAr = $status == 'accepted' ? 'تمت الموافقة' : ($status == 'in_preparation' ? 'قيد التجهيز' : ($status == 'to_deliver' ? 'قيد التوصيل' : ($status == 'delivered' ? 'تم التوصيل' : 'تم الإلغاء')));
 

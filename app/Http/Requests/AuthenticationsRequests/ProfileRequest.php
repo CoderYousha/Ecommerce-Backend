@@ -27,6 +27,7 @@ class ProfileRequest extends FormRequest
             'full_name' => 'required',
             'phone' => 'required|numeric',
             'whatsapp_phone' => 'required|numeric',
+            'image' => 'nullable|image'
         ];
     }
 
@@ -38,6 +39,7 @@ class ProfileRequest extends FormRequest
             'phone.numeric' => 'Phone must be numeric',
             'whatsapp_phone.required' => 'Whatsapp Phone is required',
             'whatsapp_phone.numeric' => 'Whatsapp Phone must be numeric',
+            'image.image' => 'Invalid image',
         ];
     }
 

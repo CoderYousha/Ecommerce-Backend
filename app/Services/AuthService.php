@@ -83,8 +83,12 @@ class AuthService
         return success(ProfileResponse::format($profile), 'Profile information');
     }
 
-    public function updateProfile($data)
+    public function updateProfile($data, $image)
     {
+        if($image){
+            $path = uploadImage($image, 'UsersImages');
+            $data['image'] = $path;
+        }
         $profile = Auth::guard('user')->user();
 
         $profile->update($data);

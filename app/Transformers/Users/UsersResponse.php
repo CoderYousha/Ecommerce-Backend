@@ -19,6 +19,7 @@ class UsersResponse
                 'whatsapp_phone' => $user->whatsapp_phone,
                 'role' => $user->role,
                 'status' => $user->status,
+                'image' => $user->image,
             ];
         }
         $data['pagination'] = PaginationResponse::format($users);

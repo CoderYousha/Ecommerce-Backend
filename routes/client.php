@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\LocationsController;
+use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\OrdersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,9 @@ Route::middleware('check-auth')->group(function () {
         Route::controller(OrdersController::class)->prefix('orders')->group(function (){
             Route::post('/', 'store');
             Route::post('/{order}/cancel', 'cancel');
+        });
+        Route::controller(NotificationsController::class)->prefix('notifications')->group(function (){
+            Route::get('/', 'read');
         });
     });
 });

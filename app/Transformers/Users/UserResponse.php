@@ -15,6 +15,7 @@ class UserResponse
                 'whatsapp_phone' => $user->whatsapp_phone,
                 'role' => $user->role,
                 'status' => $user->status,
+                'image' => $user->image,
             ]
         ];
 

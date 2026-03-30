@@ -30,6 +30,8 @@ class UpdateUserRequest extends FormRequest
             'phone' => 'required|numeric',
             'whatsapp_phone' => 'required|numeric',
             'role' => 'required',
+            'image' => 'nullable|image'
+
         ];
     }
 
@@ -48,6 +50,7 @@ class UpdateUserRequest extends FormRequest
             'password.confirmed' => 'Incorrect password confirmation',
             'password.min' => 'Password must be at least 8 characters',
             'role.required' => 'Role is required',
+            'image.image' => 'Invalid image',
         ];
     }
 
@@ -55,10 +58,10 @@ class UpdateUserRequest extends FormRequest
     {
         $errors = [];
 
-        foreach($validator->errors()->all() as $error){
+        foreach ($validator->errors()->all() as $error) {
             $errors[] = $error;
         }
-        
+
         throw new HttpResponseException(
             response()->json([
                 'status' => false,

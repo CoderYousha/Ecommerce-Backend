@@ -47,7 +47,7 @@ class AuthenticationController extends Controller
     //Update Profile Function
     public function updateProfile(ProfileRequest $profileRequest)
     {
-        return $this->authService->updateProfile($profileRequest->all());
+        return $this->authService->updateProfile($profileRequest->all(), $profileRequest->image);
     }
 
     //Reset Password Function

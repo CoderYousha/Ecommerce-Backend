@@ -17,7 +17,7 @@ class ProductService
         $users = User::where('role', 'user')->get();
         $host = request()->getHost();
         $port = request()->getPort();
-        $url = $host + ':' + $port + '/';
+        $url = $host . ':' . $port . '/';
 
         $product = Product::create($data);
 

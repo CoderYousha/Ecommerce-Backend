@@ -21,6 +21,7 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'image',
         'fcm_token'
     ];
 
@@ -34,5 +35,9 @@ class User extends Authenticatable
 
     public function locations () {
         return $this->hasMany(Location::class, 'user_id', 'id');
+    }
+
+    public function notifications (){
+        return $this->hasMany(ClientNotification::class, 'user_id', 'id');
     }
 }
