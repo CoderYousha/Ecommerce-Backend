@@ -36,7 +36,7 @@ class UsersController extends Controller
 
     //Get Users Function
     public function read (Request $request) {
-        return $this->userService->getUsers($request->per_page);
+        return $this->userService->getUsers($request->per_page, $request->role, $request->search);
     }
 
     //Get User Information Function

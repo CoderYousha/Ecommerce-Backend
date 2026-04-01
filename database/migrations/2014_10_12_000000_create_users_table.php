@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'employee', 'user']);
             $table->boolean('status')->default(1);
+            $table->enum('language', ['en', 'ar'])->default('en');
             $table->string('image')->nullable();
             $table->string('fcm_token')->unique()->nullable();
 

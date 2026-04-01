@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -85,11 +86,14 @@ class AuthService
 
     public function updateProfile($data, $image)
     {
+        $profile = Auth::guard('user')->user();
         if($image){
+            if(File::exists($profile->image)){
+                File::delete($profile->image);
+            }
             $path = uploadImage($image, 'UsersImages');
             $data['image'] = $path;
         }
-        $profile = Auth::guard('user')->user();
 
         $profile->update($data);
 

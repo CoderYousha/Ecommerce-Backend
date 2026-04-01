@@ -26,7 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'full_name' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'password' => 'min:8|confirmed',
+            'password' => 'min:8|confirmed|nullable',
             'phone' => 'required|numeric',
             'whatsapp_phone' => 'required|numeric',
             'role' => 'required',

@@ -12,7 +12,7 @@ class UserService
 {
     public function createUser($request)
     {
-        $pathh = null;
+        $path = null;
         if ($request->image) {
             $path = uploadImage($request->image, 'UsersImages');
             $data['image'] = $path;
@@ -36,7 +36,7 @@ class UserService
     {
         if ($request->image) {
             if(File::exists($user->image)){
-                File::delete($request->image);
+                File::delete($user->image);
             }
             $path = uploadImage($request->image, 'UsersImages');
             $data['image'] = $path;
@@ -58,14 +58,24 @@ class UserService
 
     public function deleteUser(User $user)
     {
+        if(File::exists($user->image)){
+            File::delete($user->image);
+        }
         $user->delete();
 
         return success(null, 'User deleted successfully');
     }
 
-    public function getUsers($perPage)
+    public function getUsers($perPage, $role, $search)
     {
-        $users = User::paginate($perPage ?? 10);
+        // if($role){
+            $users = User::where('role', $role)->where(function ($query) use ($search){
+                $query->where('full_name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%");
+            })->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
+        // }else{
+        //     $users = User::paginate($perPage ?? 10);
+        // }
 
         return success(UsersResponse::format($users), 'Users Information');
     }

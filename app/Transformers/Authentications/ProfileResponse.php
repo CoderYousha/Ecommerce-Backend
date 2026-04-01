@@ -13,6 +13,8 @@ class ProfileResponse {
                 'whatsapp_phone' => $user->whatsapp_phone,
                 'role' => $user->role,
                 'image' => $user->image,
+                'language' => $user->language,
+                'created_at' => $user->created_at,
             ]
         ];
 

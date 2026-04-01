@@ -13,6 +13,7 @@ class LoginResponse
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'whatsapp_phone' => $user->whatsapp_phone,
+                'language' => $user->language,
                 'role' => $user->role,
             ],
             'token' => $token,

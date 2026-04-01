@@ -22,6 +22,7 @@ class User extends Authenticatable
         'role',
         'status',
         'image',
+        'language',
         'fcm_token'
     ];
 
