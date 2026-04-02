@@ -28,8 +28,10 @@ class CategoryService
         return success(null, 'Category deleted successfully');
     }
 
-    public function getCategories ($perPage) {
-        $categories = Category::paginate($perPage ?? 10);
+    public function getCategories ($perPage, $search) {
+        $categories = Category::orderBy('created_at', 'desc')->where(function ($query) use ($search){
+            $query->where('name_en', 'LIKE', "%{$search}%")->orWhere('name_ar', 'LIKE', "%{$search}%");
+        })->paginate($perPage ?? 10);
 
         return success(CategoriesResponse::format($categories), 'Categories information');
     }

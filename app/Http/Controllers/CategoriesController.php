@@ -35,7 +35,7 @@ class CategoriesController extends Controller
 
     //Get Categories Function
     public function read (Request $request) {
-        return $this->categoryService->getCategories($request->per_page);
+        return $this->categoryService->getCategories($request->per_page, $request->search);
     }
 
     //Get Category Function
