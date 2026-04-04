@@ -85,9 +85,11 @@ class ProductService
         return success(null, 'Product deleted successfully');
     }
 
-    public function getProducts($perPage)
+    public function getProducts($perPage, $search)
     {
-        $products = Product::paginate($perPage ?? 10);
+        $products = Product::where(function ($query) use ($search){
+            $query->where('name_en', 'LIKE', "%{$search}%")->orWhere('name_ar', 'LIKE', "%{$search}%")->orWhere('price', 'LIKE', "%{$search}%");
+        })->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
 
         return success(ProductsResponse::format($products), 'Products information');
     }
