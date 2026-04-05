@@ -40,7 +40,7 @@ class BannersController extends Controller
 
     //Get Banners Function
     public function read (Request $request) {
-        return $this->bannerService->getBanners($request->per_page);
+        return $this->bannerService->getBanners($request->per_page, $request->search);
     }
 
     //Get Banner Function

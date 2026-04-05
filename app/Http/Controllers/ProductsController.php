@@ -44,7 +44,7 @@ class ProductsController extends Controller
 
     //Get Products Function
     public function read(Request $request) {
-        return $this->productService->getProducts($request->per_page, $request->search);
+        return $this->productService->getProducts($request->per_page, $request->search, $request->category_id);
     }
 
     //Get Product Function

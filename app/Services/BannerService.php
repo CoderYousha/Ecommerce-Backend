@@ -17,7 +17,7 @@ class BannerService
         $users = User::where('role', 'user')->get();
         $host = request()->getHost();
         $port = request()->getPort();
-        $url = $host + ':' + $port;
+        $url = $host . ':' . $port;
 
         $banner = Banner::create($data);
         if ($request->images) {
@@ -38,7 +38,7 @@ class BannerService
                 'description_en' => $data['name_en'],
                 'description_ar' => $data['name_ar'],
                 'type' => 'Banner',
-                'link' => $url + '/api/banners/' . $banner->id,
+                'link' => $url . '/api/banners/' . $banner->id,
             ]);
         }
 
@@ -84,8 +84,10 @@ class BannerService
         return success(null, 'Banner deleted successfully');
     }
 
-    public function getBanners($perPage) {
-        $banners = Banner::paginate($perPage ?? 10);
+    public function getBanners($perPage, $search) {
+        $banners = Banner::where(function ($query) use ($search) {
+            $query->where('name_en', 'LIKE', "%{$search}%")->orWhere('name_ar', 'LIKE', "%{$search}%");
+        })->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
 
         return success(BannersResponse::format($banners), 'Banners information');
     }
