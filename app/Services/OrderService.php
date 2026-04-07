@@ -77,8 +77,8 @@ class OrderService
             'user_id' => $order->user_id,
             'name_en' => 'Order Status',
             'name_ar' => 'حالة الطلب',
-            'description_en' => `Order ID {$order->id} status become $stateEn`,
-            'description_ar' => `الطلب صاحب الرقم {order->id} أصبحت حالته $stateAr`,
+            'description_en' => "Order ID {$order->id} status become $stateEn",
+            'description_ar' => "الطلب صاحب الرقم {order->id} أصبحت حالته $stateAr",
             'type' => 'Order',
             'link' => $url . '/api/orders/' . $order->id,
         ]);
@@ -86,12 +86,14 @@ class OrderService
         return success(OrderResponse::format($order), 'Order Status changed successfully');
     }
 
-    public function getOrders($perPage, $user_id)
+
+
+    public function getOrders($perPage, $user_id, $search)
     {
         if ($user_id) {
-            $orders = Order::where('user_id', $user_id)->paginate($perPage ?? 10);
+            $orders = Order::where('user_id', $user_id)->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
         } else {
-            $orders = Order::paginate($perPage ?? 10);
+            $orders = Order::where('id', 'LIKE', "%{$search}%")->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
         }
 
         return success(OrdersResponse::format($orders), 'Orders Information');

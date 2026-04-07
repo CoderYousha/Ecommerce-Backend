@@ -33,7 +33,7 @@ class OrdersController extends Controller
 
     //Get Orders Function
     public function read (Request $request){
-        return $this->orderService->getOrders($request->per_page, $request->user_id);
+        return $this->orderService->getOrders($request->per_page, $request->user_id, $request->search);
     }
 
     //Get Order Function

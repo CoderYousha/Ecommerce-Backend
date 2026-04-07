@@ -18,6 +18,7 @@ class OrdersResponse {
                 'payment_status' => $order->payment_status,
                 'user' => UserResponse::format($order->user)['user'],
                 'location' => LocationResponse::format($order->location)['location'],
+                'items' => OrderItemsResponse::format($order->items)['items'],
             ];
         }
 
