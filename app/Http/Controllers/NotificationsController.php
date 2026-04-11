@@ -18,4 +18,9 @@ class NotificationsController extends Controller
     public function read(Request $request){
         return $this->notificationService->getNotifications($request->per_page);
     }
+
+    //Store FCM Token Function
+    public function storeToken (Request $request){
+        return $this->notificationService->saveToken($request);
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Transformers\Products;
 
+use App\Models\FavoriteProduct;
 use App\Transformers\Categories\CategoryResponse;
 use App\Transformers\Pagination\PaginationResponse;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsResponse
 {
@@ -21,6 +23,7 @@ class ProductsResponse
                 'price' => $product->price,
                 'amount' => $product->amount,
                 'images' => $product->images,
+                'is_favorite' => FavoriteProduct::where('user_id', Auth::guard('user')->user()->id)->where('product_id', $product->id)->first() ? 1 : 0,
                 'category' => CategoryResponse::format($product->category)['category'],
             ];
         }

@@ -46,6 +46,7 @@ Route::middleware('check-auth')->group(function () {
         });
         Route::controller(NotificationsController::class)->prefix('notifications')->group(function (){
             Route::get('/', 'read');
+            Route::post('/', 'storeToken');
         });
     });
 });

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->enum('language', ['en', 'ar'])->default('en');
             $table->string('image')->nullable();
-            $table->string('fcm_token')->unique()->nullable();
+            $table->longText('fcm_token')->unique()->nullable();
 
             $table->timestamps();
         });
