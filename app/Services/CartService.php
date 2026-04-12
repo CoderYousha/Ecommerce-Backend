@@ -14,19 +14,28 @@ class CartService
     {
         $user = Auth::guard('user')->user();
         $product = Product::find($data['product_id']);
-        $data['user_id'] = $user->id;
+        $checkCart = Cart::where('user_id', $user->id)->where('product_id', $product->id)->first();
+        if ($checkCart) {
+            $checkCart->update([
+                'amount' => $data['amount'] + $checkCart->amount,
+            ]);
+            return success(CartResponse::format($checkCart), 'Cart updated successfully', 200);
+        } else {
+            $data['user_id'] = $user->id;
+            $cart = Cart::create($data);
 
-        if ($data['amount'] <= 0) {
-            return error('some thing went wrong', 'Invalid amount');
+            return success(CartResponse::format($cart), 'Product added to your cart', 201);
         }
 
-        if ($data['amount'] > $product->amount) {
-            return error('some thing went wrong', 'No enought products');
-        }
+        // if ($data['amount'] <= 0) {
+        //     return error('some thing went wrong', 'Invalid amount');
+        // }
 
-        $cart = Cart::create($data);
+        // if ($data['amount'] > $product->amount) {
+        //     return error('some thing went wrong', 'No enought products');
+        // }
 
-        return success(CartResponse::format($cart), 'Product added to your cart', 201);
+
     }
 
     public function updateCart(Cart $cart, $amount)
