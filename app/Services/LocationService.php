@@ -31,7 +31,7 @@ class LocationService {
 
     public function getLocations (){
         $user = Auth::guard('user')->user();
-        $locations = $user->locations;
+        $locations = $user->locations()->orderBy('created_at', 'desc')->get();
 
         return success(LocationsResponse::format($locations), 'Locations information');
     }
