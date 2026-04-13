@@ -86,7 +86,7 @@ class CartService
     public function getCarts()
     {
         $user = Auth::guard('user')->user();
-        $carts = $user->carts;
+        $carts = $user->carts()->orderBy('created_at', 'desc')->get();
 
         return success(CartsResponse::format($carts), 'Carts information');
     }
