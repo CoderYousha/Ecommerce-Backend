@@ -8,10 +8,18 @@ use App\Models\ProductImage;
 use App\Models\User;
 use App\Transformers\Products\ProductResponse;
 use App\Transformers\Products\ProductsResponse;
+use Exception;
 use Illuminate\Support\Facades\File;
 
 class ProductService
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function createProduct($data, $request)
     {
         $users = User::where('role', 'user')->get();
@@ -30,16 +38,25 @@ class ProductService
                 ]);
             }
 
-        foreach($users as $user){
-            ClientNotification::create([
-                'user_id' => $user->id,
-                'name_en' => $product->name_en,
-                'name_ar' => $product->name_ar,
-                'description_en' => $product->description_en,
-                'description_ar' => $product->description_ar,
-                'type' => 'Product',
-                'link' => $url . '/api/products/' . $product->id,
-            ]);
+        foreach ($users as $user) {
+            if ($user->role == 'user') {
+                $notification = ClientNotification::create([
+                    'user_id' => $user->id,
+                    'name_en' => $product->name_en,
+                    'name_ar' => $product->name_ar,
+                    'description_en' => $product->description_en,
+                    'description_ar' => $product->description_ar,
+                    'type' => 'Product',
+                    'link' => $url . '/api/products/' . $product->id,
+                ]);
+                // try {
+                if ($user->language == 'en')
+                    $this->notificationService->sendNotification($user->fcm_token, "New Product Added", $notification->description_en, $product->images[0]->image, '/main');
+                else
+                    $this->notificationService->sendNotification($user->fcm_token, "تمت إضافة منتج جديد", $notification->description_ar, $product->images[0]->image, '/main');
+                // } catch (Exception $e) {
+                // }
+            }
         }
 
         return success(ProductResponse::format($product), 'Product created successfully', 201);
@@ -87,9 +104,9 @@ class ProductService
 
     public function getProducts($perPage, $search, $categoryId)
     {
-        $products = Product::when($categoryId, function ($query) use ($categoryId){
+        $products = Product::when($categoryId, function ($query) use ($categoryId) {
             $query->where('category_id', $categoryId);
-        })->where(function ($query) use ($search){
+        })->where(function ($query) use ($search) {
             $query->where('name_en', 'LIKE', "%{$search}%")->orWhere('name_ar', 'LIKE', "%{$search}%")->orWhere('price', 'LIKE', "%{$search}%");
         })->orderBy('created_at', 'desc')->paginate($perPage ?? 10);
 
