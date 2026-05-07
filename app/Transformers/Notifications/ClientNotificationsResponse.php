@@ -17,6 +17,7 @@ class ClientNotificationsResponse {
                 'description_ar' => $notification->description_ar,
                 'type' => $notification->type,
                 'link' => $notification->link,
+                'created_at' => $notification->created_at->format('Y-m-d H:i')
             ];
         }
 
